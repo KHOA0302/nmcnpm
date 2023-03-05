@@ -10,7 +10,7 @@
     <title>Document</title>
     <style>
         html {
-            font-family: 'Poppins', sans-serif;
+            font-family: "Poppins", sans-serif;
         }
         body, h1, h4, btn, input {
             padding: 0;
@@ -187,7 +187,7 @@
             <h4 class="bottom">Posts and Telecommunications Institute of Technology</h4>
         </div>
     </div>
-    <nav class='navbar'>
+    <nav class="navbar">
         <ul class="option">
             <li class="item">Trang chủ</li>
             <li class="item">Quản lí tài khoản</li>
@@ -267,59 +267,29 @@
     </div>
     <script>
        
-        const checkHk = () => {
-            const stc = document.getElementById('stc')
-            const stchp = document.getElementById('stchp')
-            const dcc = document.getElementById('%dcc')
-            const dse = document.getElementById('%dse')
-            const dth = document.getElementById('%dth')
-            const dkt = document.getElementById('%dkt')
-            const dt = document.getElementById('%dt')
+        const checkHk = function() {
+            const stc = document.getElementById("stc")
+            const stchp = document.getElementById("stchp")
+            const dcc = document.getElementById("%dcc")
+            const dse = document.getElementById("%dse")
+            const dth = document.getElementById("%dth")
+            const dkt = document.getElementById("%dkt")
+            const dt = document.getElementById("%dt")
 
             if(stc.value >= 1 && stc.value <= 4) {
                 stc.value = stc.value
             } else {
-                stc.value = ''
+                stc.value = ""
             }
-
-            // if(dcc.value == 10) {
-            //     dcc.value = dcc.value
-            // } else {
-            //     dcc.value = ''
-            // }
-
-            // if(dse.value != 30) {
-            //     dse.value = dse.value
-            // } else {
-            //     dse.value = ''
-            // }
-
-            // if(dth.value != 10) {
-            //     dth.value = dth.value
-            // } else {
-            //     dth.value = ''
-            // }
-
-            // if(dkt.value != 30) {
-            //     dkt.value = dkt.value
-            // } else {
-            //     dkt.value = ''
-            // }
-
-            // if(dt.value != 60) {
-            //     dt.value = dt.value
-            // } else {
-            //     dt.value = ''
-            // }
         }
 
-        window.onload = () => {
-            document.getElementById('stc').oninput = checkHk
-            document.getElementById('%dcc').oninput = checkHk
-            document.getElementById('%dse').oninput = checkHk
-            document.getElementById('%dth').oninput = checkHk
-            document.getElementById('%dkt').oninput = checkHk
-            document.getElementById('%dt').oninput = checkHk
+        window.onload = function() {
+            document.getElementById("stc").oninput = checkHk
+            document.getElementById("%dcc").oninput = checkHk
+            document.getElementById("%dse").oninput = checkHk
+            document.getElementById("%dth").oninput = checkHk
+            document.getElementById("%dkt").oninput = checkHk
+            document.getElementById("%dt").oninput = checkHk
         }
     </script>
 </body>
