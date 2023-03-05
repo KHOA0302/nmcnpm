@@ -1,4 +1,8 @@
-<!-- <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> -->
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -162,6 +166,8 @@
         .title-option {
             display: flex;
             background-color: #d1e6dd;
+            margin: 0;
+            padding: 0;
             /* border: 0.5px solid #bfcfc7; */
         }
         .title-item {
@@ -169,6 +175,7 @@
             font-weight: 600;
             line-height: 40px;
             text-align: center;
+            list-style: none;
         }
         .title-item:first-child {
             width: 2%;
@@ -209,10 +216,13 @@
         .element-option {
             display: flex;
             background-color: #d1e6dd;
+            margin: 0;
+            padding: 0;
             /* border: 0.5px solid #bfcfc7; */
         }
         .element-item {
             text-align: center;
+            list-style: none;
         }
         .element-item:first-child {
             width: 2%;
@@ -421,7 +431,7 @@
                         </li>
                         <li class="element-item">INT1303</li>
                         <li class="element-item">An toàn và bảo mật hệ thống thông tin</li>
-                        <li class="element-item">03</li>
+                        <li class="element-item">02</li>
                         <li class="element-item">3</li>
                         <li class="element-item">3</li>
                         <li class="element-item">D20CQCN01-N</li>
@@ -434,9 +444,9 @@
                         <li class="element-item">
                             <input type="checkbox" name="checkedTop" checkState="false" onclick="handleCheck(this)">
                         </li>
-                        <li class="element-item">INT1303</li>
-                        <li class="element-item">An toàn và bảo mật hệ thống thông tin</li>
-                        <li class="element-item">03</li>
+                        <li class="element-item">INT13606</li>
+                        <li class="element-item">Lập trình web</li>
+                        <li class="element-item">01</li>
                         <li class="element-item">3</li>
                         <li class="element-item">3</li>
                         <li class="element-item">D20CQCN01-N</li>
@@ -449,8 +459,8 @@
                         <li class="element-item">
                             <input type="checkbox" name="checkedTop" checkState="false" onclick="handleCheck(this)">
                         </li>
-                        <li class="element-item">INT1303</li>
-                        <li class="element-item">An toàn và bảo mật hệ thống thông tin</li>
+                        <li class="element-item">INT1909</li>
+                        <li class="element-item">Nhập môn công nghệ phần mềm</li>
                         <li class="element-item">03</li>
                         <li class="element-item">3</li>
                         <li class="element-item">3</li>
@@ -496,23 +506,24 @@
             if(e.getAttribute("checkState") == "true") {
                 e.setAttribute("checkState", "false")
                 listBoxChecked.forEach(function(element, index) {
-                    if(element[0] === checkTarget.childNodes[3].innerText && element[1] === checkTarget.childNodes[9].innerText) {
+                    if(element[0] === checkTarget.childNodes[3].innerText && element[1] === checkTarget.childNodes[7].innerText) {
                         listBoxChecked.splice(index, 1)
                     }
                 })
                 localStorage.setItem("Box", JSON.stringify(listBoxChecked))
                 html.map(function(element, index) {
-                    new DOMParser().parseFromString((element), "text/xml").childNodes.forEach(function(node) {
-                        if(node.childNodes[2].childNodes[0].getAttribute("value") === checkTarget.childNodes[3].innerText) {
-                            html.splice(index, 1)
+                    var wrapper= document.createElement("div");
+                        wrapper.innerHTML= element
+                        var div= wrapper.firstChild
+                        if(div.childNodes[1].childNodes[0].getAttribute("value") === checkTarget.childNodes[3].innerText && div.childNodes[3].childNodes[0].getAttribute("value") === checkTarget.childNodes[7].innerText) {
+                           html.splice(index, 1)
                         }
-                    })
                 })
             } else {
                 e.setAttribute("checkState", "true")
-                listBoxChecked.push([checkTarget.childNodes[3].innerText, checkTarget.childNodes[9].innerText])
+                listBoxChecked.push([checkTarget.childNodes[3].innerText, checkTarget.childNodes[7].innerText])
                 localStorage.setItem("Box", JSON.stringify(listBoxChecked))
-                html.push("<ul class=\"element-option\"><li class=\"element-item\" checkState=\""+ e.getAttribute("checkState") +"\">" + "i" + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[3].innerText +"\"></li><li class=\"element-item\">" + checkTarget.childNodes[5].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"thhMonHoc\" value=\"" + checkTarget.childNodes[7].innerText+"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[9].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[11].innerText +"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[19].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[21].innerText +"</li><li class=\"element-item\">" + notification + "</li></ul>")
+                html.push("<ul class=\"element-option\"><li class=\"element-item\" checkState=\""+ e.getAttribute("checkState") +"\">" + "i" + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[3].innerText +"\"></li><li class=\"element-item\">" + checkTarget.childNodes[5].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"thhMonHoc\" value=\"" + checkTarget.childNodes[7].innerText+"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[9].innerText + "</li><li class=\"element-item\">" + checkTarget.childNodes[11].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[19].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[21].innerText +"</li><li class=\"element-item\">" + notification + "</li></ul>")
             }
             const subscribedSub = document.querySelector(".subed-content .element-wrapper")
             subscribedSub.innerHTML = html.join("") 
@@ -545,7 +556,7 @@
             checkTopBoxs.forEach( function(topBox) {
                 const checkTarget = topBox.parentNode.parentNode
                 listBox.forEach( function(box){
-                    if(box[0] === checkTarget.childNodes[3].innerText && box[1] === checkTarget.childNodes[9].innerText ) {
+                    if(box[0] === checkTarget.childNodes[3].innerText && box[1] === checkTarget.childNodes[7].innerText ) {
                         topBox.checked = true
                         handleCheck(topBox, notification)
                     }
@@ -554,4 +565,4 @@
         }
     </script>
 </body>
-</html>
+</html> 
