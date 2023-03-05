@@ -470,7 +470,21 @@
                         <li class="element-item">20/02/2023</li>
                         <li class="element-item">02/04/2023</li>
                     </ul>
-                    
+                    <ul class="element-option">
+                        <li class="element-item">
+                            <input type="checkbox" name="checkedTop" checkState="false" onclick="handleCheck(this)">
+                        </li>
+                        <li class="element-item">INT1909</li>
+                        <li class="element-item">Nhập môn công nghệ phần mềm</li>
+                        <li class="element-item">02</li>
+                        <li class="element-item">3</li>
+                        <li class="element-item">3</li>
+                        <li class="element-item">D20CQCN01-N</li>
+                        <li class="element-item">41</li>
+                        <li class="element-item">Hết</li>
+                        <li class="element-item">20/02/2023</li>
+                        <li class="element-item">02/04/2023</li>
+                    </ul>
                 </div>
             </div>
             <div class="subed-wrapper">
@@ -514,16 +528,29 @@
                 html.map(function(element, index) {
                     var wrapper= document.createElement("div");
                         wrapper.innerHTML= element
-                        var div= wrapper.firstChild
+                    var div= wrapper.firstChild
                         if(div.childNodes[1].childNodes[0].getAttribute("value") === checkTarget.childNodes[3].innerText && div.childNodes[3].childNodes[0].getAttribute("value") === checkTarget.childNodes[7].innerText) {
                            html.splice(index, 1)
                         }
                 })
             } else {
                 e.setAttribute("checkState", "true")
-                listBoxChecked.push([checkTarget.childNodes[3].innerText, checkTarget.childNodes[7].innerText])
+                if(listBoxChecked.length === 0) {
+                    listBoxChecked.push([checkTarget.childNodes[3].innerText, checkTarget.childNodes[7].innerText])
+                    html.push("<ul class=\"element-option\"><li class=\"element-item\" checkState=\""+ e.getAttribute("checkState") +"\">" + "i" + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[3].innerText +"\"></li><li class=\"element-item\">" + checkTarget.childNodes[5].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"thhMonHoc\" value=\"" + checkTarget.childNodes[7].innerText+"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[9].innerText + "</li><li class=\"element-item\">" + checkTarget.childNodes[11].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[19].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[21].innerText +"</li><li class=\"element-item\">" + notification + "</li></ul>")
+                } else {
+                    listBoxChecked.forEach(function(element) {
+                        if(checkTarget.childNodes[3].innerText === element[0]) {
+                            e.setAttribute("checkState", "false")
+                            e.checked = false
+                        } else {
+                            listBoxChecked.push([checkTarget.childNodes[3].innerText, checkTarget.childNodes[7].innerText])
+                            html.push("<ul class=\"element-option\"><li class=\"element-item\" checkState=\""+ e.getAttribute("checkState") +"\">" + "i" + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[3].innerText +"\"></li><li class=\"element-item\">" + checkTarget.childNodes[5].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"thhMonHoc\" value=\"" + checkTarget.childNodes[7].innerText+"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[9].innerText + "</li><li class=\"element-item\">" + checkTarget.childNodes[11].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[19].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[21].innerText +"</li><li class=\"element-item\">" + notification + "</li></ul>")
+                        }
+                    })
+                }
+               
                 localStorage.setItem("Box", JSON.stringify(listBoxChecked))
-                html.push("<ul class=\"element-option\"><li class=\"element-item\" checkState=\""+ e.getAttribute("checkState") +"\">" + "i" + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[3].innerText +"\"></li><li class=\"element-item\">" + checkTarget.childNodes[5].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"thhMonHoc\" value=\"" + checkTarget.childNodes[7].innerText+"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[9].innerText + "</li><li class=\"element-item\">" + checkTarget.childNodes[11].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[19].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[21].innerText +"</li><li class=\"element-item\">" + notification + "</li></ul>")
             }
             const subscribedSub = document.querySelector(".subed-content .element-wrapper")
             subscribedSub.innerHTML = html.join("") 
