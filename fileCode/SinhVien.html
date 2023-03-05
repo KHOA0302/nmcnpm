@@ -517,45 +517,48 @@
         var listBoxChecked = []
         function handleCheck(e, notification = "Chưa lưu vào cơ sở dữ liệu") {
             const checkTarget = e.parentNode.parentNode
+
             if(e.getAttribute("checkState") == "true") {
-                e.setAttribute("checkState", "false")
-                listBoxChecked.forEach(function(element, index) {
-                    if(element[0] === checkTarget.childNodes[3].innerText && element[1] === checkTarget.childNodes[7].innerText) {
-                        listBoxChecked.splice(index, 1)
-                    }
-                })
-                localStorage.setItem("Box", JSON.stringify(listBoxChecked))
-                html.map(function(element, index) {
-                    var wrapper= document.createElement("div");
-                        wrapper.innerHTML= element
-                    var div= wrapper.firstChild
-                        if(div.childNodes[1].childNodes[0].getAttribute("value") === checkTarget.childNodes[3].innerText && div.childNodes[3].childNodes[0].getAttribute("value") === checkTarget.childNodes[7].innerText) {
-                           html.splice(index, 1)
-                        }
-                })
+                unCheck(e, notification)
             } else {
-                e.setAttribute("checkState", "true")
-                if(listBoxChecked.length === 0) {
-                    listBoxChecked.push([checkTarget.childNodes[3].innerText, checkTarget.childNodes[7].innerText])
-                    html.push("<ul class=\"element-option\"><li class=\"element-item\" checkState=\""+ e.getAttribute("checkState") +"\">" + "i" + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[3].innerText +"\"></li><li class=\"element-item\">" + checkTarget.childNodes[5].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"thhMonHoc\" value=\"" + checkTarget.childNodes[7].innerText+"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[9].innerText + "</li><li class=\"element-item\">" + checkTarget.childNodes[11].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[19].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[21].innerText +"</li><li class=\"element-item\">" + notification + "</li></ul>")
-                } else {
-                    listBoxChecked.forEach(function(element) {
-                        if(checkTarget.childNodes[3].innerText === element[0]) {
-                            e.setAttribute("checkState", "false")
-                            e.checked = false
-                        } else {
-                            listBoxChecked.push([checkTarget.childNodes[3].innerText, checkTarget.childNodes[7].innerText])
-                            html.push("<ul class=\"element-option\"><li class=\"element-item\" checkState=\""+ e.getAttribute("checkState") +"\">" + "i" + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[3].innerText +"\"></li><li class=\"element-item\">" + checkTarget.childNodes[5].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"thhMonHoc\" value=\"" + checkTarget.childNodes[7].innerText+"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[9].innerText + "</li><li class=\"element-item\">" + checkTarget.childNodes[11].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[19].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[21].innerText +"</li><li class=\"element-item\">" + notification + "</li></ul>")
-                        }
-                    })
-                }
-               
-                localStorage.setItem("Box", JSON.stringify(listBoxChecked))
+                check(e, notification)
             }
             const subscribedSub = document.querySelector(".subed-content .element-wrapper")
             subscribedSub.innerHTML = html.join("") 
         }
 
+        function check(e, notification) {
+            const checkTarget = e.parentNode.parentNode
+            e.setAttribute("checkState", "true")
+            listBoxChecked.push([checkTarget.childNodes[3].innerText, checkTarget.childNodes[7].innerText])
+            html.push("<ul class=\"element-option\"><li class=\"element-item\" checkState=\""+ e.getAttribute("checkState") +"\">" + "i" + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[3].innerText +"\"></li><li class=\"element-item\">" + checkTarget.childNodes[5].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"thhMonHoc\" value=\"" + checkTarget.childNodes[7].innerText+"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[9].innerText + "</li><li class=\"element-item\">" + checkTarget.childNodes[11].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[19].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[21].innerText +"</li><li class=\"element-item\">" + notification + "</li><li class=\"element-item\" style=\"display: none; width: 0 !important\"><input class=\"element-input\" name=\"idLop\" value=\""+checkTarget.childNodes[13].innerText +"\"></li></ul>")
+            localStorage.setItem("Box", JSON.stringify(listBoxChecked))
+        }
+
+        function unCheck (e, notification) {
+            const checkTarget = e.parentNode.parentNode
+            e.setAttribute("checkState", "false")
+            listBoxChecked.forEach(function(element, index) {
+                if(element[0] === checkTarget.childNodes[3].innerText && element[1] === checkTarget.childNodes[7].innerText) {
+                    listBoxChecked.splice(index, 1)
+                }
+            })
+            localStorage.setItem("Box", JSON.stringify(listBoxChecked))
+            html.map(function(element, index) {
+                var wrapper= document.createElement("div");
+                    wrapper.innerHTML= element
+                    var div= wrapper.firstChild
+                    if(div.childNodes[1].childNodes[0].getAttribute("value") === checkTarget.childNodes[3].innerText && div.childNodes[3].childNodes[0].getAttribute("value") === checkTarget.childNodes[7].innerText) {
+                        html.splice(index, 1)
+                    }
+            })
+        }
+
+        function multipleCheck(e, notification) {
+            e.setAttribute("checkState", false)
+            e.checked = false
+        }
+        
         function handleNotification() {
             localStorage.setItem("isNotification", true)
         }
@@ -580,7 +583,8 @@
 
             var  notification = JSON.parse(localStorage.getItem("isNotification")) ? "Đã lưu vào cơ sở dữ liệu" :  "Chưa lưu vào cơ sở dữ liệu"
             const listBox = JSON.parse(localStorage.getItem("Box"))
-            checkTopBoxs.forEach( function(topBox) {
+            if(listBox != null) {
+                checkTopBoxs.forEach( function(topBox) {
                 const checkTarget = topBox.parentNode.parentNode
                 listBox.forEach( function(box){
                     if(box[0] === checkTarget.childNodes[3].innerText && box[1] === checkTarget.childNodes[7].innerText ) {
@@ -588,7 +592,7 @@
                         handleCheck(topBox, notification)
                     }
                 }) 
-            })
+            })}
         }
     </script>
 </body>
