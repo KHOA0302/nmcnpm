@@ -512,15 +512,34 @@
             </div>
         </div>    
     </div>
-    <script>
+<script>
         var html = []
         var listBoxChecked = []
+        var limitCheck = 0
+        const form = document.querySelector(".form-subSubject")
+        
         function handleCheck(e, notification = "Chưa lưu vào cơ sở dữ liệu") {
             const checkTarget = e.parentNode.parentNode
-
             if(e.getAttribute("checkState") == "true") {
+                limitCheck = limitCheck - parseInt(checkTarget.childNodes[9].innerText)
                 unCheck(e, notification)
             } else {
+                listBoxChecked.forEach(function(element) {
+                    if(checkTarget.childNodes[3].innerText === element[0]) {
+                        e.checked = false
+                        e = null
+                        alert("Môn học này giống với môn học bạn từng chọn!")
+                    }
+                })
+                if(e) {
+                    limitCheck = limitCheck + parseInt(checkTarget.childNodes[9].innerText)
+                }
+                if(limitCheck > 21) {
+                    limitCheck = limitCheck - parseInt(checkTarget.childNodes[9].innerText)
+                    e.checked = false
+                    e = null
+                    alert("Vượt quá số tính chỉ cho phép!")
+                }
                 check(e, notification)
             }
             const subscribedSub = document.querySelector(".subed-content .element-wrapper")
@@ -528,11 +547,13 @@
         }
 
         function check(e, notification) {
-            const checkTarget = e.parentNode.parentNode
-            e.setAttribute("checkState", "true")
-            listBoxChecked.push([checkTarget.childNodes[3].innerText, checkTarget.childNodes[7].innerText])
-            html.push("<ul class=\"element-option\"><li class=\"element-item\" checkState=\""+ e.getAttribute("checkState") +"\">" + "i" + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[3].innerText +"\"></li><li class=\"element-item\">" + checkTarget.childNodes[5].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"thhMonHoc\" value=\"" + checkTarget.childNodes[7].innerText+"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[9].innerText + "</li><li class=\"element-item\">" + checkTarget.childNodes[11].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[19].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[21].innerText +"</li><li class=\"element-item\">" + notification + "</li><li class=\"element-item\" style=\"display: none; width: 0 !important\"><input class=\"element-input\" name=\"idLop\" value=\""+checkTarget.childNodes[13].innerText +"\"></li></ul>")
-            localStorage.setItem("Box", JSON.stringify(listBoxChecked))
+           if(e) {
+                const checkTarget = e.parentNode.parentNode
+                e.setAttribute("checkState", "true")
+                listBoxChecked.push([checkTarget.childNodes[3].innerText, checkTarget.childNodes[7].innerText])
+                html.push("<ul class=\"element-option\"><li class=\"element-item\" checkState=\""+ e.getAttribute("checkState") +"\">" + "i" + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"idMonHoc\" value=\""+checkTarget.childNodes[3].innerText +"\"></li><li class=\"element-item\">" + checkTarget.childNodes[5].innerText + "</li><li class=\"element-item\"><input class=\"element-input\" name=\"thhMonHoc\" value=\"" + checkTarget.childNodes[7].innerText+"\"></li><li class=\"element-item\">"+ checkTarget.childNodes[9].innerText + "</li><li class=\"element-item\">" + checkTarget.childNodes[11].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[19].innerText +"</li><li class=\"element-item\">"+ checkTarget.childNodes[21].innerText +"</li><li class=\"element-item\">" + notification + "</li><li class=\"element-item\" style=\"display: none; width: 0 !important\"><input class=\"element-input\" name=\"idLop\" value=\""+checkTarget.childNodes[13].innerText +"\"></li></ul>")
+                localStorage.setItem("Box", JSON.stringify(listBoxChecked))
+           }
         }
 
         function unCheck (e, notification) {
@@ -553,16 +574,12 @@
                     }
             })
         }
-
-        function multipleCheck(e, notification) {
-            e.setAttribute("checkState", false)
-            e.checked = false
-        }
         
         function handleNotification() {
             localStorage.setItem("isNotification", true)
         }
 
+        
         window.onload = function() {
             const checkTopBoxs = document.querySelectorAll("input[name=checkedTop]")
             const bottomElements = document.querySelectorAll(".element-item .bottom-element")
@@ -593,7 +610,23 @@
                     }
                 }) 
             })}
+
+            if(JSON.parse(localStorage.getItem("isSubmitted")) && limitCheck >= 21) {
+                const listCheckBox = document.querySelectorAll("input[checkState=true]")
+                const submitBtn = document.querySelector(".btn-subSubject")
+            
+                listCheckBox.forEach(function(box){
+                    box.setAttribute("disabled", true)
+                })
+
+                submitBtn.setAttribute("disabled", true)
+            }
         }
+        form.addEventListener("submit", function(event) {
+            event.preventDefault()
+            localStorage.setItem("isSubmitted", true)
+            this.submit()
+        })
     </script>
 </body>
 </html> 
